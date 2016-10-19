@@ -1,0 +1,35 @@
+version: '2'
+services:
+
+    web:
+      image: abretaud/bbric-archive:latest
+      links:
+        - db:postgres
+        - elasticsearch:elasticsearch
+      environment:
+        - ARCHIVE_HTTP_HOST=https://localhost:5000/
+        - ARCHIVE_HTTP_ROOT=archive
+        - ARCHIVE_TITLE=Archive
+        - ARCHIVE_FTP=your.ftp.site
+#        - ARCHIVE_HTTP_HOST=https://bipaa.genouest.org/
+#        - ARCHIVE_HTTP_ROOT=archive
+#        - ARCHIVE_TITLE=BIPAA Archive
+#        - ARCHIVE_FTP=bipaa-galaxy.genouest.org
+#        - ARCHIVE_EXT_FTP=1
+#        - ARCHIVE_CLIENT_MOUNTPOINT=/data/store
+#        - ARCHIVE_ADMINS=someone@example.org,somebody@example.org
+      volumes:
+        - /data
+      ports:
+        - "5000:80"
+
+    db:
+      image: postgres:9.4
+      environment:
+        - POSTGRES_PASSWORD=postgres
+        - PGDATA=/var/lib/postgresql/9.4/
+      volumes:
+        - /var/lib/postgresql/9.4/
+
+    elasticsearch:
+      image: elasticsearch

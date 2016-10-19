@@ -1,0 +1,115 @@
+--- a/cgi/archive.cgi	2016-10-04 09:49:29.766067458 +0000
++++ b/cgi/archive.cgi	2016-10-14 13:44:20.938166294 +0000
+@@ -2,12 +2,12 @@
+ 
+ BEGIN
+ {
+-	use FindBin;
+-	use lib "$FindBin::Bin/../bin/ext/EZLucene/lib";
+-	use lib "$FindBin::Bin/../lib/int/";
+-	use lib "$FindBin::Bin/../lib/ext/";
+-	use lib "$FindBin::Bin/../corelib/";
+-	$ENV{CFG_ARCHIVE} = "$FindBin::Bin/../site/cfg/archive.cfg";
++	use File::Basename;
++	use lib dirname(__FILE__)."/../bin/ext/EZLucene/lib";
++	use lib dirname(__FILE__)."/../lib/int/";
++	use lib dirname(__FILE__)."/../lib/ext/";
++	use lib dirname(__FILE__)."/../corelib/";
++	$ENV{CFG_ARCHIVE} = dirname(__FILE__)."/../site/cfg/archive.cfg";
+ }
+ 
+ package main;
+--- a/lib/int/account.pl	2016-10-04 09:49:34.047642701 +0000
++++ b/lib/int/account.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -41,7 +41,8 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/account/groups.pl";
+-require "$FindBin::Bin/../lib/int/account/files.pl";
++$path = dirname(__FILE__);
++require "$path/account/groups.pl";
++require "$path/account/files.pl";
+ 
+ 1;
+--- a/lib/int/acl.pl	2016-10-04 09:49:33.912656092 +0000
++++ b/lib/int/acl.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -43,11 +43,13 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/acl/insert.pl";
+-require "$FindBin::Bin/../lib/int/acl/select.pl";
+-require "$FindBin::Bin/../lib/int/acl/connect.pl";
+-require "$FindBin::Bin/../lib/int/acl/assert.pl";
+-require "$FindBin::Bin/../lib/int/acl/delete.pl";
+-require "$FindBin::Bin/../lib/int/acl/update.pl";
++use File::Basename;
++$path = dirname(__FILE__);
++require "$path/acl/insert.pl";
++require "$path/acl/select.pl";
++require "$path/acl/connect.pl";
++require "$path/acl/assert.pl";
++require "$path/acl/delete.pl";
++require "$path/acl/update.pl";
+ 
+ 1;
+--- a/lib/int/display.pl	2016-10-04 09:49:33.912656092 +0000
++++ b/lib/int/display.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -42,6 +42,7 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/display/collections.pl";
++$path = dirname(__FILE__);
++require "$path/display/collections.pl";
+ 
+ 1;
+--- a/lib/int/download.pl	2016-10-04 09:49:33.970650339 +0000
++++ b/lib/int/download.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -41,6 +41,7 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/download/files.pl";
++$path = dirname(__FILE__);
++require "$path/download/files.pl";
+ 
+ 1;
+--- a/lib/int/ftp.pl	2016-10-04 09:49:33.911656191 +0000
++++ b/lib/int/ftp.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -44,7 +44,8 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/ftp/create.pl";
+-require "$FindBin::Bin/../lib/int/ftp/browse.pl";
++$path = dirname(__FILE__);
++require "$path/ftp/create.pl";
++require "$path/ftp/browse.pl";
+ 
+ 1;
+--- a/lib/int/lucene.pl	2016-10-04 09:49:33.909656390 +0000
++++ b/lib/int/lucene.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -41,7 +41,8 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/lucene/search.pl";
+-require "$FindBin::Bin/../lib/int/lucene/utils.pl";
++$path = dirname(__FILE__);
++require "$path/lucene/search.pl";
++require "$path/lucene/utils.pl";
+ 
+ 1;
+--- a/lib/int/upload.pl	2016-10-04 09:49:36.837365944 +0000
++++ b/lib/int/upload.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -41,6 +41,7 @@
+ 
+ =cut
+ 
+-require "$FindBin::Bin/../lib/int/upload/upload.pl";
++$path = dirname(__FILE__);
++require "$path/upload/upload.pl";
+ 
+ 1;

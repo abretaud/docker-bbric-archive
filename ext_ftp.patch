@@ -1,0 +1,96 @@
+--- a/bin/int/archive_delete.pl	2016-10-04 09:49:34.050642403 +0000
++++ b/bin/int/archive_delete.pl	2016-10-03 17:35:33.000000000 +0000
+@@ -175,7 +175,7 @@
+ 	$LOGGER->logdie( 'Docid not found: ' . $o_param->Get('docid') ) if ( !defined $ra_results );
+ 
+ 	my $rh_result    = shift(@$ra_results);
+-	my $submitter_id = md5_hex( $rh_result->{"archive_${collection}-submitter"}[0] );
++	my $submitter_id = ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $rh_result->{"archive_${collection}-submitter"}[0] : md5_hex( $rh_result->{"archive_${collection}-submitter"}[0] ));
+ 
+ 	die "ERROR - docid not valid\n" if ( !defined $rh_result->{'docid'} && ( $rh_result->{'docid'} !~ /^\w{32}$/ ) );
+ 
+--- a/cgi/archive.cgi	2016-10-04 09:49:29.766067458 +0000
++++ b/cgi/archive.cgi	2016-10-14 13:44:20.938166294 +0000
+@@ -103,6 +103,7 @@
+ our $REPOSITORY_IRODS_PATH;
+ our $REPOSITORY_TYPE;
+ our $INCOMING_REPOSITORY_PATH;
++our $INCOMING_HTTP_PATH;
+ our $LOGGER;
+ our $LOGPERF;
+ 
+@@ -159,6 +160,7 @@
+ 	$REPOSITORY_IRODS_PATH    = $O_CONF->Get('repository_irods_path');
+ 	$REPOSITORY_TYPE          = $O_CONF->Get('repository_type');
+ 	$INCOMING_REPOSITORY_PATH = $O_CONF->Get('incoming_repository_path');
++ 	$INCOMING_HTTP_PATH = $O_CONF->Get('incoming_http_path');
+ 	$TITLE                    = $O_CONF->Get('archive_title');
+ 
+ 	my $archive_install_dir = $O_CONF->Get('archive_install_dir');
+@@ -471,7 +473,9 @@
+ 	{
+ 		$o_webbuilder->SetContentLength( &__GetFileLength($o_param) );
+ 	}
++ 	eval { # To avoid errors "Software error: ModPerl::Util::exit: (120000) exit was called"
+ 	$o_webbuilder->Realize();
++ 	};
+ 	$LOGPERF->debug('end');
+ }
+ 
+--- a/lib/int/ftp/browse.pl	2016-10-04 09:49:36.826367035 +0000
++++ b/lib/int/ftp/browse.pl	2016-10-14 13:54:28.560736507 +0000
+@@ -80,7 +80,7 @@
+     $filter .= " \\)";
+ 
+     my $user              = lc($o_authentic->GetLogin());
+-    my $ftp_homedirectory = $O_CONF->Get('incoming_repository_path') . '/' . md5_hex($user);
++    my $ftp_homedirectory = $O_CONF->Get('incoming_repository_path') . '/' . ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $user : md5_hex($user));
+     $LOGGER->debug("[sftp][browse] $user - $ftp_homedirectory");
+ 
+     if (-d $ftp_homedirectory)
+--- a/lib/int/ftp/create.pl	2016-10-04 09:49:33.910656291 +0000
++++ b/lib/int/ftp/create.pl	2016-10-04 15:52:53.532433111 +0000
+@@ -125,8 +125,8 @@
+     my ($o_param, $user) = @_;
+ 
+     my $incoming_repository_path = $O_CONF->Get('incoming_repository_path');
+-    my $ftp_homedirectory        = $incoming_repository_path . '/' . md5_hex($user);
+-    my $http_homedirectory       = $incoming_repository_path . '/' . md5_hex($user) . '/http';
++    my $ftp_homedirectory        = $incoming_repository_path . '/' . ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $user : md5_hex($user));
++    my $http_homedirectory       = $incoming_repository_path . '/' . ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $user : md5_hex($user)) . '/http';
+ 
+     if (!-d $ftp_homedirectory)
+     {
+--- a/lib/int/upload/upload.pl	2016-10-04 09:49:36.802369416 +0000
++++ b/lib/int/upload/upload.pl	2016-10-14 07:54:39.253240086 +0000
+@@ -658,7 +658,7 @@
+ 	$login = lc($login);
+ 
+ 	my $internal_path =
+-	  $INCOMING_REPOSITORY_PATH . "/" . md5_hex($login) . "/http";
++	  $INCOMING_HTTP_PATH . "/" . ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $login : md5_hex($login));
+ 	  
+ 	  
+ 	if( ! -d $internal_path)
+@@ -687,7 +687,7 @@
+ 	chomp($login);
+ 	$login = lc($login);
+ 
+-	my $internal_path = $INCOMING_REPOSITORY_PATH . "/" . md5_hex($login);
++	my $internal_path = $INCOMING_REPOSITORY_PATH . "/" . ( $ENV{'ARCHIVE_EXT_FTP'} == "1" ? $login : md5_hex($login));
+ 
+ 	return $internal_path;
+ }
+--- a/web/js/int/extjs/classes/view/account/V_FtpPanel.js	2016-10-04 09:49:42.902764221 +0000
++++ b/web/js/int/extjs/classes/view/account/V_FtpPanel.js	2016-10-14 13:50:10.532398131 +0000
+@@ -40,10 +40,6 @@
+ 		},
+ 		items : [{
+ 					xtype : "button",
+-					action : "getFtpAccess",
+-					text : "Get/Update your FTP access"
+-				}, {
+-					xtype : "button",
+ 					action : "browseFtp",
+ 					text : "Browse your FTP directory"
+ 				}]

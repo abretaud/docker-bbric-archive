@@ -1,0 +1,8 @@
+#You can add IP and hostnames/aliases for external tool access (e.g. galaxy)
+#syntax:
+#ip       hostname[:/export/mount/point]        alias1 alias2
+147.99.102.20	bbric-pipelines.toulouse.inra.fr
+131.254.158.22	bipaa-galaxy.genouest.org
+192.168.1.169	bipaa-galaxy.genouest.org
+192.168.1.170   bipaa-galaxy.genouest.org
+192.168.1.195	dev-galaxy.genouest.org

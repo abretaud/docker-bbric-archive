@@ -1,0 +1,89 @@
+# Copyright INRA/CNRS
+
+# Emmanuel.Courcelle@toulouse.inra.fr
+# Jerome.Gouzy@toulouse.inra.fr
+# Sebastien.Carrere@toulouse.inra.fr
+# Erika.Sallet@toulouse.inra.fr
+# Ludovic.Cottret@toulouse.inra.fr
+# Ludovic.Legrand@toulouse.inra.fr
+
+# This software is a perl module whose purpose is to help you writing
+# your own scripts
+
+# This software is governed by the CeCILL license under French law and
+# abiding by the rules of distribution of free software.  You can  use,
+# modify and/ or redistribute the software under the terms of the CeCILL
+# license as circulated by CEA, CNRS and INRIA at the following URL
+# "http://www.cecill.info".
+
+# As a counterpart to the access to the source code and  rights to copy,
+# modify and redistribute granted by the license, users are provided only
+# with a limited warranty  and the software's author,  the holder of the
+# economic rights,  and the successive licensors  have only  limited
+# liability.
+
+# In this respect, the user's attention is drawn to the risks associated
+# with loading,  using,  modifying and/or developing or reproducing the
+# software by the user in light of its specific status of free software,
+# that may mean  that it is complicated to manipulate,  and  that  also
+# therefore means  that it is reserved for developers  and  experienced
+# professionals having in-depth computer knowledge. Users are therefore
+# encouraged to load and test the software's suitability as regards their
+# requirements in conditions enabling the security of their systems and/or
+# data to be ensured and,  more generally, to use and operate it in the
+# same conditions as regards security.
+
+# The fact that you are presently reading this means that you have had
+# knowledge of the CeCILL license and that you accept its terms.
+
+#
+#APACHE CONFIGURATION DIRECTIVES
+#
+SetEnvIf Request_URI "^/__ARCHIVE_HTTP_ROOT__/?.*$" TMPDIR=/data/http_tmp
+SetEnvIf Request_URI "^/__ARCHIVE_HTTP_ROOT__/?.*$" HOME=/var/www
+
+Alias "/__ARCHIVE_HTTP_ROOT__/site/tmp" /var/www/html/site/tmp
+ScriptAlias "/__ARCHIVE_HTTP_ROOT__/cgi" "/var/www/html/cgi"
+RedirectMatch "^/__ARCHIVE_HTTP_ROOT__/$" "__ARCHIVE_HTTP_HOST____ARCHIVE_HTTP_ROOT__/web/index.html"
+
+
+<Directory /var/www/html>
+    RewriteEngine On
+
+    # 2.4 pb pour transferer REMOTE_USER depuis sso-dev
+    # utilisation du header HTTP_MAIL pour creer REMOTE_USER
+    # shibboleth utilise deja ce champs pour peupler REMOTE_USER dans shibboleth2.xml
+    RewriteCond %{HTTP:MAIL} ^(.*)$
+    RewriteRule .* - [E=HTTP_REMOTE_USER:%1]
+
+
+    #CONF URLs
+
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__[/]?\?(.+)$ /__ARCHIVE_HTTP_ROOT__/cgi/archive.cgi?$1  [T=application/x-httpd-cgi]
+
+    #WS
+
+    # permalink
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__/ws/(\w+)/docid/(\w+)\.html$ "__ARCHIVE_HTTP_HOST____ARCHIVE_HTTP_ROOT__/?collection=$1&docid=$2"
+
+    #API
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__/ws/*$ /__ARCHIVE_HTTP_ROOT__/cgi/archive.cgi?__wb_function=WSDoc\&__wba_ajax=j [T=application/x-httpd-cgi]
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__/ws/+(\w+)/*$ /__ARCHIVE_HTTP_ROOT__/cgi/archive.cgi?__wb_function=IndexFields\&__wba_ajax=j\&__wb_collection=$1 [T=application/x-httpd-cgi]
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__/ws/+(\w+)/+([\w-]+)/*$ /__ARCHIVE_HTTP_ROOT__/cgi/archive.cgi?__wb_function=IndexFields\&__wba_ajax=j\&__wb_collection=$1\&fields=$2 [T=application/x-httpd-cgi]
+	RewriteRule ^__ARCHIVE_HTTP_ROOT__/ws/+(\w+)/+(\w+)/+(.*) /__ARCHIVE_HTTP_ROOT__/cgi/archive.cgi?__wba_ajax=j\&__wb_collection=$1\&$2=$3 [T=application/x-httpd-cgi]
+</Directory>
+
+<Directory "/var/www/html/cgi">
+	Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+</Directory>
+
+
+
+<LocationMatch "/__ARCHIVE_HTTP_ROOT__/site/tmp/(xref|cache)">
+	Options -Indexes
+	AllowOverride All
+</LocationMatch>
+
+<LocationMatch "/__ARCHIVE_HTTP_ROOT__/site/(cfg|data|log|schema|sql|template)">
+    Require all denied
+</LocationMatch>

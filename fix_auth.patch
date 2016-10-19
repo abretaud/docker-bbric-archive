@@ -1,0 +1,33 @@
+--- a/corelib/Authentic/ShibLdap.pm	2016-10-04 09:49:43.097744877 +0000
++++ b/corelib/Authentic/ShibLdap.pm	2016-10-04 10:15:51.730780823 +0000
+@@ -243,8 +243,18 @@
+ 	}
+ 	elsif ( defined $ENV { HTTP_REMOTE_USER } )
+ 	{
++                # Env variables are HTTP_ . upper-cased of attribute !
++                $login_attribute = 'HTTP_' . uc($login_attribute);
++                $login       = $ENV { $login_attribute };
++                $email       = $ENV { HTTP_MAIL };
++                $common_name= $ENV { HTTP_CN };
++                $identity_provider = $ENV { HTTP_SHIB_IDENTITY_PROVIDER };
++                $eppn        = $ENV { HTTP_EPPN } if (exists $ENV{ HTTP_EPPN });
++	}
++	elsif ( defined $ENV { HTTP_MAIL } )
++	{
+ 		# Env variables are HTTP_ . upper-cased of attribute !
+-		$login_attribute = 'HTTP_' . uc($login_attribute);
++		$login_attribute = 'HTTP_MAIL';
+ 		$login       = $ENV { $login_attribute };
+ 		$email       = $ENV { HTTP_MAIL };
+ 		$common_name= $ENV { HTTP_CN };
+@@ -462,7 +472,9 @@
+ 			}
+ 	
+ 			$self->_Trace("Starting __AuthenticateFromProviderId: redirecting to $redirect_url\n");
+-			print redirect($redirect_url);
++			my $o_cgi   = new CGI;
++			print $o_cgi->header(-location => $redirect_url);
++			exit;
+ 		}
+ 		return &TRUE;
+ 	}
