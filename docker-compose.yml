@@ -2,7 +2,7 @@ version: '2'
 services:
 
     web:
-      image: abretaud/bbric-archive:latest
+      image: quay.io/abretaud/bbric-archive:latest
       links:
         - db:postgres
         - elasticsearch:elasticsearch
