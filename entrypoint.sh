@@ -88,9 +88,9 @@ mkdir -p /data/http_tmp/
 mkdir -p /data/ftp/
 
 # Ensure permissions are ok
-chown www-data: /data/store/
-chown www-data: /data/http/
-chown www-data: /data/http_tmp/
+chown -R www-data: /data/store/
+chown -R www-data: /data/http/
+chown -R www-data: /data/http_tmp/
 
 # Create a symbolic link corresponding to $ARCHIVE_HTTP_ROOT
 if [[ "${ARCHIVE_HTTP_ROOT}" != "" ]]
