@@ -117,7 +117,7 @@ ARCHIVE_TITLE=BIPAA Archive # Name of the site
 ARCHIVE_FTP=bipaa-galaxy.genouest.org # Url of the FTP site
 ARCHIVE_EXT_FTP=1 # Add this if you're using an external FTP configured like galaxy (user email used for dir names mainly). No FTP server is provided otherwise.
 ARCHIVE_CLIENT_MOUNTPOINT=/data/store # Used by the client to create symlinks, change this if /data/store is mounted at a different mountpoint on external servers
-ARCHIVE_ADMINS=someone@example.org,somebody@example.org # Comma-separated list of emails of admin
+ARCHIVE_ADMINS=someone@example.org;somebody@example.org # ;-separated list of emails of admin
 ```
 
 ### Config files
