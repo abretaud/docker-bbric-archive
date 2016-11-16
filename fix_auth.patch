@@ -31,3 +31,17 @@
  		}
  		return &TRUE;
  	}
+@@ -532,8 +544,12 @@
+ 
+ 		$self->SUPER::Logout();
+ 		$shib_url .= "?return=$return_url";
+-		print redirect($shib_url);
++		#print redirect($shib_url);
++		my $o_cgi   = new CGI;
++		print $o_cgi->header(-location => $shib_url);
++		exit;
+ 	}
+ }
+ 
+ 1;
++
