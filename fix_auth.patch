@@ -45,3 +45,15 @@
  
  1;
 +
+--- a/lib/int/externaltools.pl	2016-11-21 10:26:27.442854600 +0000
++++ b/lib/int/externaltools.pl	2016-11-21 10:29:45.643732877 +0000
+@@ -312,6 +312,8 @@
+     $fh_in_host_file->close;
+ 
+     my $ip = $ENV{'HTTP_X_FORWARDED_FOR'};
++    my @a_ip = split(/,?\s+/, $ip);
++    $ip = $a_ip[0];
+ 
+     $LOGGER->debug("ExternalToolAuthentication: $host_file, $ip");
+     &ExternalToolError("ERROR - ExternalToolAuthentication: externaltool.hosts not found or empty")
+
