@@ -56,13 +56,13 @@ sub ArchiveSync
 			$data_path .= '/' . join( '_', map { my $data = $_->text; $data =~ s/\s+/_/g; $_ = $data } $o_xml->get_xpath("//strain") ) if ( $o_xml->get_xpath("//strain") > 0 );
 			$data_path .= '/' . join( '_', map { my $data = $_->text; $data =~ s/\s+/_/g; $_ = $data } $o_xml->get_xpath("//genotype") ) if ( $o_xml->get_xpath("//genotype") > 0 );
 			$h_data{$barecode}{path} = $data_path;
-			system("mkdir -p $data_path") if ( !-e $data_path );
+			system("mkdir -p '$data_path'") if ( !-e $data_path );
 		}
 
 		my $dest_path = $rh_entry->{'rawdata_filepath'};
 		$dest_path =~ s|/data/store|$dest_mountpoint|g;
 
-		system("ln -s $dest_path $h_data{$barecode}{path}/$filename") if ( !-l "$h_data{$barecode}{path}/$filename" );
+		system("ln -s '$dest_path' '$h_data{$barecode}{path}/$filename'") if ( !-l "$h_data{$barecode}{path}/$filename" );
 	}
 }
 
