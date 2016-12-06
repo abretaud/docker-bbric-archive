@@ -45,6 +45,17 @@
  
  1;
 +
+--- a/lib/int/common.pl	2016-12-06 14:53:17.554623771 +0000
++++ b/lib/int/common.pl	2016-12-06 14:57:57.435607361 +0000
+@@ -140,7 +140,7 @@
+ 
+ 	my $mail_cmd = "$mail_prog  -a \"Content-Type: text/plain; charset=UTF-8\" -s \"$subject\" ";
+ 
+-	$mail_cmd .= ' -c ' . join( ',', @$ra_ccvalid ) if ( defined $cc );
++	$body = '~c ' . join( ',', @$ra_ccvalid ) . "\n" . $body if ( defined $cc );
+ 	$mail_cmd .= ' ' . join( ',', @$ra_valid );
+ 
+ 	open( MAIL, "| $mail_cmd" ) || ExtJsCallback( "$mail_cmd : $!", 'false' );
 --- a/lib/int/externaltools.pl	2016-11-21 10:26:27.442854600 +0000
 +++ b/lib/int/externaltools.pl	2016-11-21 10:29:45.643732877 +0000
 @@ -312,6 +312,8 @@

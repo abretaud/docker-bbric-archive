@@ -20,3 +20,4 @@ Text::ASCIITable
 IO/Prompt
 Text::Table
 DBD::SQLite
+IO::Prompt
