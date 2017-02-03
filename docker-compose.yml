@@ -32,4 +32,8 @@ services:
         - /var/lib/postgresql/9.4/
 
     elasticsearch:
-      image: elasticsearch
+      image: elasticsearch:2.4.4
+      volumes:
+        - /usr/share/elasticsearch/data
+      environment:
+        ES_JAVA_OPTS: "-Xms150m -Xmx150m"
