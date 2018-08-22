@@ -53,7 +53,7 @@ ADD site/cfg/externaltool.hosts /var/www/html/site/cfg/externaltool.hosts
 RUN ./install.pl || echo ""
 
 # Run the miniclient every hour
-RUN echo "0 * * * * (bash -lc 'perl /opt/miniclient/miniclient.pl >> /var/log/archive_miniclient.log 2>&1')" >> /tmp/client_cron && \
+RUN echo "0 * * * * (bash -lc 'perl /opt/miniclient/miniclient.pl >> /var/log/archive_miniclient.log 2>&1') > /dev/null 2>&1 || true" >> /tmp/client_cron && \
     crontab /tmp/client_cron && rm /tmp/client_cron
 
 # Keep a backup of config files with placeholders
