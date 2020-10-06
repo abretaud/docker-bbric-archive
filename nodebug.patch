@@ -1,0 +1,11 @@
+--- ./web/index.html	2020-10-06 16:23:19.856502605 +0200
++++ ./web/index.html	2020-10-06 16:23:27.317579798 +0200
+@@ -14,7 +14,7 @@
+ 	href="css/archive-theme/archive-theme-all.css" />
+ <link rel="stylesheet" type="text/css" href="css/archive.css" />
+ 
+-<script type="text/javascript" src="js/ext/ext-all-debug.js"></script>
++<script type="text/javascript" src="js/ext/ext-all.js"></script>
+ 
+ <script type="text/javascript" src="js/int/extjs/app.js"></script>
+ 

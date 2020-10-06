@@ -36,6 +36,7 @@ Some patches are applied:
  - ext_ftp.patch: allow to modify the Archive behavior when ARCHIVE_EXT_FTP is enabled.
  - findbin.patch: fixes some strange errors related to perl lib imports
  - fix_auth.patch: some tweaks to allow authentication with shibboleth + fix problems of 302 redirections on a POST request (proxies don't like it)
+ - nodebug.patch: use the non-debug js file (much smaller to download)
 
 ## Configuration
 

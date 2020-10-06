@@ -38,8 +38,16 @@ WORKDIR /var/www/html
 ADD findbin.patch /opt/findbin.patch
 ADD ext_ftp.patch /opt/ext_ftp.patch
 ADD fix_auth.patch /opt/fix_auth.patch
+ADD nodebug.patch /opt/nodebug.patch
 
-RUN svn co http://lipm-svn.toulouse.inra.fr/svn/inra_archive/tags/archive_v2.0 . && rm -rf .svn doc && patch -p1 < /opt/findbin.patch && patch -p1 < /opt/ext_ftp.patch && patch -p1 < /opt/fix_auth.patch && git clone https://framagit.org/BBRIC/ezlastic.git bin/ext/ezlastic && chown -R www-data: .
+RUN svn co http://lipm-svn.toulouse.inra.fr/svn/inra_archive/tags/archive_v2.0 . && \
+    rm -rf .svn doc && \
+    patch -p1 < /opt/findbin.patch && \
+    patch -p1 < /opt/ext_ftp.patch && \
+    patch -p1 < /opt/fix_auth.patch && \
+    patch -p1 < /opt/nodebug.patch && \
+    git clone https://framagit.org/BBRIC/ezlastic.git bin/ext/ezlastic && \
+    chown -R www-data: .
 
 ADD site/cfg/install.cfg /var/www/html/site/cfg/install.cfg
 ADD site/cfg/externaltool.hosts /var/www/html/site/cfg/externaltool.hosts
