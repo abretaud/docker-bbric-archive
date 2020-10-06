@@ -47,6 +47,9 @@ RUN svn co http://lipm-svn.toulouse.inra.fr/svn/inra_archive/tags/archive_v2.0 .
     patch -p1 < /opt/fix_auth.patch && \
     patch -p1 < /opt/nodebug.patch && \
     git clone https://lipm-gitlab.toulouse.inra.fr/LIPM-BIOINFO/ezlastic.git bin/ext/ezlastic && \
+    cd bin/ext/ezlastic && \
+    git checkout 54369ce3acdc94aa67950e2765c0229defab6d8d && \
+    cd ../../.. && \
     chown -R www-data: .
 
 ADD site/cfg/install.cfg /var/www/html/site/cfg/install.cfg
