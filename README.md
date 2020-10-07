@@ -31,6 +31,8 @@ This was written with BIPAA use case in mind, here are BIPAA-specific behaviors:
 </location>
 ```
 
+You can also use the Shibboleth SP docker image to ease Shibboleth install https://hub.docker.com/r/unicon/shibboleth-sp/.
+
 Some patches are applied:
 
  - ext_ftp.patch: allow to modify the Archive behavior when ARCHIVE_EXT_FTP is enabled.
