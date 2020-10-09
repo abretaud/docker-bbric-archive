@@ -128,3 +128,22 @@ ARCHIVE_ADMINS=someone@example.org;somebody@example.org # ;-separated list of em
 Modify `site/cfg/externaltool.hosts` to allow external servers to access data (usually Galaxy servers)
 
 Modify `/etc/ssmtp/ssmtp.conf` to configure the (external) SMTP server to be used by Archive.
+
+
+## Shibboleth
+
+It is possible to run Shibboleth using a docker container. Have a look at [docker-compose-with-shibboleth.yml](./docker-compose-with-shibboleth.yml) for an example (adapted from a slightly different working conf, not tested as is).
+
+In this example, the shibboleth container acts as a proxy for the archive container. You need to access it by going to https://localhost:5000/, as the 5000 is the https por exposed by the shibboleth container.
+
+You need to update to fill the [sp-cert.pem](shibboleth/sp-cert.pem) and [sp-key.pem](shibboleth/sp-key.pem) with the real cert/key you used to register your SP on the federation.
+
+Please note that it uses the 3.0.4 version of the container, though the config was written for v2.x. It means you get warning at startup in Shibboleth logs, but it works anyway.
+
+The attribute-map.xml and attribute-policy.xml files were downloaded from renater a few years ago.
+
+The metadata-federation-renater.crt and renater-metadata-signing-cert-2016.pem were downloaded from renater too.
+
+You need to configure Shibboleth by modifying shibboleth2.xml, at least changing your website url + contact email.
+
+Finally, you can edit httpd_shib.conf to add Shibboleth auth to any other service by proxying as you will.
