@@ -4,7 +4,8 @@ MAINTAINER Anthony Bretaudeau <anthony.bretaudeau@inra.fr>
 ADD perl_modules.txt /root/perl_modules.txt
 
 # Install deps
-RUN apt-get -q update && \
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list && \
+    apt-get -q update && \
     DEBIAN_FRONTEND=noninteractive apt-get -yq --no-install-recommends install \
     apache2 libapache2-mod-perl2 postgresql-client-9.4 curl file libdbi-perl libdbd-pg-perl tree libxml-twig-perl libjson-perl xsltproc \
     libconvert-uulib-perl at liblog-log4perl-perl liblog-dispatch-filerotate-perl nano subversion git patch libxml2-utils ssmtp mailutils \
