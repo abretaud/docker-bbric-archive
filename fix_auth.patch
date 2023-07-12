@@ -1,5 +1,18 @@
 --- a/corelib/Authentic/ShibLdap.pm	2016-10-04 09:49:43.097744877 +0000
 +++ b/corelib/Authentic/ShibLdap.pm	2016-10-04 10:15:51.730780823 +0000
+@@ -60,9 +60,9 @@
+ # The providerIds which will be proposed by the integrated wayf
+ # They will be proposed in the order of @A_PROVIDER_NAMES, so that you may control the display order
+ # The Other option will redirect to the standard wayf, with all members - It is recognized by the 'wayf' reserved word
+-our @A_PROVIDERS = qw( INRA CNRS CIRAD Other... );
+-our %H_PROVIDERS = (INRA       => 'https://idp.inra.fr/idp/shibboleth',
+-					CNRS       => 'urn:mace:cnrs.fr:janus.dsi.cnrs.fr',
++our @A_PROVIDERS = qw( INRAE CNRS CIRAD Other... );
++our %H_PROVIDERS = (INRAE       => 'https://authentification.inrae.fr/saml/metadata/idp',
++					CNRS       => 'https://janus.cnrs.fr/idp',
+ 					CIRAD      => 'https://idp.cirad.fr/idp/shibboleth',
+ 					'Other...' => 'wayf' );
+ 
 @@ -243,8 +243,18 @@
  	}
  	elsif ( defined $ENV { HTTP_REMOTE_USER } )
