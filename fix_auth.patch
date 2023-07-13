@@ -13,6 +13,17 @@
  					CIRAD      => 'https://idp.cirad.fr/idp/shibboleth',
  					'Other...' => 'wayf' );
  
+@@ -71,8 +71,8 @@
+ #
+ # NOTE - This array is the default value of the constructor parameter -authorized_orga
+ #        If the list is empty this test is NOT done
+-# 
+-our @A_AUTHORIZED_ORGA = qw( inra.fr cnrs.fr cirad.fr ird.fr );
++#
++our @A_AUTHORIZED_ORGA = qw( inrae.fr cnrs.fr cirad.fr ird.fr );
+ 
+ =head2 function _Init
+ 
 @@ -243,8 +243,18 @@
  	}
  	elsif ( defined $ENV { HTTP_REMOTE_USER } )
